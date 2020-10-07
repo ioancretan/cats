@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/LoginFragment">
+
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.cats.login.LoginFragment"
+        android:label="@string/login_activity_label"
+        tools:layout="@layout/login_fragment">
+
+        <action
+            android:id="@+id/action_LoginFragment_to_BreedsFragment"
+            app:destination="@id/BreedsFragment"
+            app:popUpTo='@id/nav_graph'
+            app:popUpToInclusive="true"
+          />
+    </fragment>
+
+    <fragment
+        android:id="@+id/BreedsFragment"
+        android:name="com.example.cats.breeds.CatsBreedsFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_cats_breeds">
+
+        <action
+            android:id="@+id/action_CatsBreedsFragments_to_BreedDetails"
+            app:destination="@id/BreedDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/BreedDetailsFragment"
+        android:name="com.example.cats.breeds.BreedDetailsFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_breed_details">
+
+        <action
+            android:id="@+id/action_BreedDetailsFragment_to_BreedsFragment"
+            app:destination="@id/BreedsFragment" />
+    </fragment>
+
+</navigation>
