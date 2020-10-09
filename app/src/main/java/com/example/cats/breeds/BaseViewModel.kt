@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.cats.di.component.DaggerNetWorkComponent
 import com.example.cats.di.component.NetWorkComponent
 import com.example.cats.di.module.NetworkModule
+import com.example.cats.login.LoginViewModel
 
 open class BaseViewModel : ViewModel() {
 
@@ -25,6 +26,7 @@ open class BaseViewModel : ViewModel() {
     private fun inject() {
         when (this) {
             is CatsBreedsViewModel -> injector.inject(this)
+            is LoginViewModel -> injector.inject(this)
         }
     }
 }

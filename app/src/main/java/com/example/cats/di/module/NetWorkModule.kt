@@ -1,5 +1,8 @@
 package com.example.cats.di.module
 
+import com.example.cats.breeds.CatsBreedsRepository
+import com.example.cats.login.LoginRepository
+import com.example.cats.login.ApiService
 import com.example.cats.networking.ApiClient
 import com.example.cats.networking.RxSingleSchedulers
 import com.google.gson.GsonBuilder
@@ -35,6 +38,28 @@ object NetworkModule {
     internal fun provideRxSingleSchedulers(): RxSingleSchedulers {
         return RxSingleSchedulers.DEFAULT
     }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun provideLoginService(retrofit: Retrofit): ApiService {
+        return ApiService(retrofit)
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun provideLoginRepository(apiService: ApiService): LoginRepository {
+        return LoginRepository()
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun provideCatsBreedsRepository(): CatsBreedsRepository {
+        return CatsBreedsRepository()
+    }
+
 
     @Provides
     @Reusable

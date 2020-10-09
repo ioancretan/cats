@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface ApiClient {
 
     @GET("breeds")
-    fun getRepo(): Single<List<CatBreed>>
+    fun getBreeds(): Single<List<CatBreed>>
 
     @GET("images/search")
     fun getBreedImageUrl(

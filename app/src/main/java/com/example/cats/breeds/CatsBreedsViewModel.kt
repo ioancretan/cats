@@ -5,17 +5,14 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
-import com.example.cats.networking.ApiClient
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
 
-class CatsBreedsViewModel : BaseViewModel() {
+class CatsBreedsViewModel @Inject constructor() : BaseViewModel() {
 
     @Inject
-    lateinit var breedsApiBreeds: ApiClient
+    lateinit var catsBreedsRepository: CatsBreedsRepository
 
     var selectedBreed = MutableLiveData<CatBreed>()
 
@@ -32,14 +29,8 @@ class CatsBreedsViewModel : BaseViewModel() {
 
         if (breedsListLive.value.isNullOrEmpty()) {
             dataLoading.value = true
-            breedsApiBreeds.getRepo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map { it.sortedBy { it.name } }
-                .subscribe(
-                    { result -> onRetrieveBreedsListSuccess(result) },
-                    { onRetrieveBreedseListError(it) }
-                )
+            catsBreedsRepository.getBreeds({ breedsList -> onRetrieveBreedsListSuccess(breedsList) },
+                { throwable -> onRetrieveBreedseListError(throwable) })
         }
     }
 
@@ -83,14 +74,10 @@ class CatsBreedsViewModel : BaseViewModel() {
 
     @SuppressLint("CheckResult")
     fun loadUrlForCatBreed(id: String) {
-        breedsApiBreeds.getBreedImageUrl(id,"thumb",0)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map { it.get(0).url }
-            .subscribe(
-                { url -> onRetrieveBreedImageSuccess(url, id) },
-                { onRetrieveBreedseListError(it) }
-            )
+
+        catsBreedsRepository.getBreedImageUrl(id, "thumb", 0,
+            { url -> onRetrieveBreedImageSuccess(url, id) },
+            { throwable -> onRetrieveBreedseListError(throwable) })
     }
 
     private fun onRetrieveBreedImageSuccess(url: String, id: String) {
@@ -104,7 +91,7 @@ object ImageBindingAdapter {
     @BindingAdapter("imageUrl")
     fun setImageUrl(view: ImageView, url: String?) {
 
-        if(url!=null) {
+        if (url != null) {
             Glide.with(view.context).load(url).into(view)
         }
     }

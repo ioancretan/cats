@@ -4,13 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.cats.breeds.LoginResponse
 import com.example.cats.login.LoginUser
 import com.example.cats.login.LoginViewModel
-import com.example.cats.networking.ApiClient
 import com.example.cats.networking.RxSingleSchedulers
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
@@ -29,9 +27,6 @@ class LoginViewModelTest {
     @Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    @Mock
-    lateinit var apiClient: ApiClient
-
     private var viewModel: LoginViewModel? = null
 
 
@@ -40,8 +35,7 @@ class LoginViewModelTest {
 
         MockitoAnnotations.initMocks(this)
         viewModel = LoginViewModel()
-        viewModel!!.rxSingleSchedulers = RxSingleSchedulers.TEST_SCHEDULER
-        viewModel!!.breedsApiBreeds = apiClient
+        viewModel!!.loginRepository.rxSingleSchedulers = RxSingleSchedulers.TEST_SCHEDULER
     }
 
     @Test
